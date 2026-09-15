@@ -1,5 +1,6 @@
 import json
 from datetime import datetime
+
 import matplotlib.pyplot as plt
 
 with open("data.json", "r", encoding="utf-8") as file:
@@ -9,6 +10,9 @@ records = []
 
 # Stores the total EVA duration for each country
 total_eva_hours_by_country = {}
+
+# Stores the number of EVAs recorded for each country
+eva_count_by_country = {}
 
 for eva in eva_data:
     date_text = eva.get("date")
@@ -33,6 +37,12 @@ for eva in eva_data:
 
         total_eva_hours_by_country[country_name] += duration_hours
 
+        # Counts the number of valid EVAs for each country
+        if country_name not in eva_count_by_country:
+            eva_count_by_country[country_name] = 0
+
+        eva_count_by_country[country_name] += 1
+
 records.sort(key=lambda record: record[0])
 
 dates = []
@@ -52,17 +62,36 @@ plt.savefig("cumulative_duration.png")
 plt.show()
 
 
-# Allows the user to choose which country's total EVA duration to display
+# Allows the user to choose which country's EVA statistics to display
 selected_country_name = input("Enter country: ")
 
-# Displays the total if the selected country exists in the data
+# Displays the statistics if the selected country exists in the data
 if selected_country_name in total_eva_hours_by_country:
+    # Calculates the average EVA duration using the total duration and EVA count
+    average_eva_hours = (
+        total_eva_hours_by_country[selected_country_name]
+        / eva_count_by_country[selected_country_name]
+    )
+
+    print(
+        "Number of EVAs for",
+        selected_country_name,
+        "is",
+        eva_count_by_country[selected_country_name],
+    )
     print(
         "Total EVA duration for",
         selected_country_name,
         "is",
         total_eva_hours_by_country[selected_country_name],
-        "hours"
+        "hours",
+    )
+    print(
+        "Average EVA duration for",
+        selected_country_name,
+        "is",
+        average_eva_hours,
+        "hours",
     )
 else:
     print("No EVA records found for", selected_country_name)
