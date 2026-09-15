@@ -1,9 +1,8 @@
 import json
 from datetime import datetime
-
 import matplotlib.pyplot as plt
 
-with open("data.json", "r", encoding="utf-8") as file:
+with open("1399478eva-data.json", "r", encoding="utf-8") as file:
     eva_data = json.load(file)
 
 records = []
@@ -67,6 +66,7 @@ selected_country_name = input("Enter country: ")
 
 # Displays the statistics if the selected country exists in the data
 if selected_country_name in total_eva_hours_by_country:
+
     # Calculates the average EVA duration using the total duration and EVA count
     average_eva_hours = (
         total_eva_hours_by_country[selected_country_name]
@@ -77,21 +77,24 @@ if selected_country_name in total_eva_hours_by_country:
         "Number of EVAs for",
         selected_country_name,
         "is",
-        eva_count_by_country[selected_country_name],
+        eva_count_by_country[selected_country_name]
     )
+
     print(
         "Total EVA duration for",
         selected_country_name,
         "is",
         total_eva_hours_by_country[selected_country_name],
-        "hours",
+        "hours"
     )
+
     print(
         "Average EVA duration for",
         selected_country_name,
         "is",
         average_eva_hours,
-        "hours",
+        "hours"
     )
+
 else:
     print("No EVA records found for", selected_country_name)
